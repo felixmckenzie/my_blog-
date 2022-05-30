@@ -1,0 +1,36 @@
+
+<h1><%= @article.title%> </h1>
+<p>Body:<%= @article.body%></p>
+<p>Importance:<%= @article.importance%></p>
+
+<p>Created <%= time_ago_in_words(@article.created_at)%> ago</p>
+<p>Updated <%= time_ago_in_words(@article.updated_at)%> ago</p>
+
+
+<p><%= link_to "Edit this article", edit_article_path%></p>
+<p><%= link_to "Delete this article", article_path, method: :delete, data: {confirm: "Do you want to delete this article? "}%></p>
+<br><br>
+
+<p><%= link_to_unless_current "Go to next article", @article.next %></p>
+<p><%= link_to_unless_current "Go to previous article", @article.prev %></p>
+
+<% @article.comments.each do |comment| %>
+<p><%= comment.commenter %></p>
+<p><%= comment.body%></p>
+<% end %>
+
+<%= form_with model: [ @article, @article.comments.build ] do |form| %>
+  <p>
+    <%= form.label :commenter %><br>
+    <%= form.text_field :commenter %>
+  </p>
+
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
